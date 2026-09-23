@@ -296,6 +296,7 @@ section { padding: 40px 0; }
 .mockup .body .pct { color: var(--text-dim); min-width: 44px; text-align: right; }
 .mockup .body .muted { color: var(--text-dim); }
 .mockup .body .ok { color: #5ec98a; }
+.mockup-shot { display: block; width: 100%; height: auto; }
 
 /* feature grid */
 .feature-grid {
