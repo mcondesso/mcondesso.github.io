@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Setlists — Miguel Condesso</title>
-  <meta name="description" content="My Setlists: build and share musical setlists. Search Discogs, order tracks by drag and drop, and publish for anyone to browse. FastAPI + Svelte." />
+  <meta name="description" content="My Setlists: build and share musical setlists. No account needed to browse — log in to create your own, search Discogs, drag tracks into order, and get an AI-suggested song for each setlist. FastAPI + Svelte." />
   <meta name="color-scheme" content="dark light" />
 
   <meta property="og:title" content="My Setlists" />
-  <meta property="og:description" content="Build and share musical setlists — search Discogs, order tracks by drag and drop, and publish for anyone to browse." />
+  <meta property="og:description" content="Build and share musical setlists — search Discogs, order tracks by drag and drop, and get an AI-suggested song for each one. No account needed to browse." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://mcondesso.github.io/projects/my-setlists.html" />
   <meta property="og:image" content="https://mcondesso.github.io/assets/images/my-setlists-screenshot.png" />
@@ -48,9 +48,10 @@
       <div class="wrap">
         <h1 class="reveal">My Setlists</h1>
         <p class="tagline reveal">
-          Build a setlist, search Discogs to add tracks, drag them into order,
-          and share it — publicly or just with yourself. A small full-stack
-          app: FastAPI backend, Svelte 5 frontend.
+          Browse public setlists without an account. Log in to build your
+          own — search Discogs to add tracks, drag them into order, switch
+          public or private any time — and each setlist gets a Gemini-suggested
+          song, verified against Discogs before it's shown.
         </p>
         <div class="badges reveal">
           <span class="badge">FastAPI</span>
@@ -59,6 +60,7 @@
           <span class="badge">Svelte 5</span>
           <span class="badge">TypeScript</span>
           <span class="badge">Discogs API</span>
+          <span class="badge">Google Gemini</span>
         </div>
         <div class="hero-links reveal">
           <a class="btn btn-primary" href="https://my-setlists-app.onrender.com/" target="_blank" rel="noopener">
@@ -93,10 +95,11 @@
         <div class="section-head reveal"><h2>The problem</h2></div>
         <p class="reveal">
           Setlists live in scattered notes apps, DMs, and memory. My Setlists gives
-          them a proper home: register, build a setlist, search Discogs for each
-          track instead of typing metadata by hand, drag tracks into the order
-          they'll actually play, and mark the setlist public so anyone can browse
-          it — or keep it private, just for yourself.
+          them a proper home: anyone can open a public setlist and read it, no
+          account needed. Logging in adds building your own — search Discogs
+          for each track instead of typing metadata by hand, drag tracks into
+          the order they'll actually play, and flip a setlist public or private
+          whenever you like.
         </p>
       </div>
     </section>
@@ -107,16 +110,20 @@
         <div class="section-head reveal"><h2>What it does</h2></div>
         <div class="feature-grid">
           <div class="feature reveal">
+            <h3><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></span>Browse without an account</h3>
+            <p>Logged-out visitors can open any public setlist or song, read-only. Logging in from there — to add a song, say — returns you to the same page afterwards.</p>
+          </div>
+          <div class="feature reveal">
             <h3><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>Accounts</h3>
             <p>Register and log in with a JWT-backed session; passwords hashed with Argon2 via <code>pwdlib</code>, auth endpoints rate-limited against brute force.</p>
           </div>
           <div class="feature reveal">
-            <h3><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>Public or private setlists</h3>
-            <p>Every setlist is public or private, owned by the account that created it. "My setlists" and "Public setlists" are listed separately, paginated with "Load more".</p>
+            <h3><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>Public or private, any time</h3>
+            <p>A setlist is private unless its owner makes it public — and they can flip that switch again whenever they like, not just at creation. "My setlists" and "Public setlists" list separately, paginated with "Load more".</p>
           </div>
           <div class="feature reveal">
-            <h3><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.35-4.35M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/></svg></span>Discogs search</h3>
-            <p>Add a song by searching Discogs and picking the right release — no manual typing of title, artist or duration. Repeat picks reuse and backfill the same song record.</p>
+            <h3><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.35-4.35M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/></svg></span>Track-level Discogs search</h3>
+            <p>Discogs only searches albums, so the backend fetches each candidate album's full tracklist and scores individual tracks against the query — turning an album search into a song search.</p>
           </div>
           <div class="feature reveal">
             <h3><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span>Drag to reorder</h3>
@@ -127,8 +134,12 @@
             <p>Each song's duration is tracked and rolled up into a song count and total playback time shown on the setlist page.</p>
           </div>
           <div class="feature reveal">
+            <h3><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.2 6.6H21l-5.4 4 2.1 6.6-5.7-4.1-5.7 4.1 2.1-6.6L3 8.6h6.8z"/></svg></span>A recommended song, verified</h3>
+            <p>Whenever a setlist's songs change, a background task asks Gemini for songs that fit, then keeps the first one it can confirm actually exists on Discogs — so nothing made up ever reaches the page. The owner can ask for another.</p>
+          </div>
+          <div class="feature reveal">
             <h3><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>Song detail page</h3>
-            <p>Every song has its own page with links out to Discogs and YouTube, plus a picker for adding it to any of your setlists.</p>
+            <p>Artwork, album, year and duration, links out to Discogs and YouTube, plus a picker for adding it to any of your setlists.</p>
           </div>
         </div>
       </div>
@@ -142,22 +153,22 @@
           <div class="step reveal">
             <span class="num"></span>
             <div>
-              <h3>Create</h3>
-              <p>Register, log in, and start a setlist as public or private. The JWT session refreshes quietly in the background so an open tab stays logged in.</p>
+              <h3>Browse</h3>
+              <p>Public setlists and songs are open to anyone, no account needed. Trying to edit prompts a login and brings you right back afterwards.</p>
             </div>
           </div>
           <div class="step reveal">
             <span class="num"></span>
             <div>
               <h3>Build</h3>
-              <p>Search Discogs for each track, add the right result, and drag songs into the order the setlist should play in.</p>
+              <p>Log in, start a setlist, search Discogs for each track, add the right result, and drag songs into the order the setlist should play in. Make it public or keep it private — switchable any time.</p>
             </div>
           </div>
           <div class="step reveal">
             <span class="num"></span>
             <div>
-              <h3>Share</h3>
-              <p>Public setlists show up for anyone to browse and open; private ones stay visible only to their owner.</p>
+              <h3>Discover</h3>
+              <p>A recommended song appears below the list a few seconds later, picked by Gemini and double-checked against Discogs before anyone sees it.</p>
             </div>
           </div>
         </div>
@@ -172,12 +183,16 @@
           Backend: <code>FastAPI</code> + <code>SQLModel</code> over PostgreSQL,
           <code>Alembic</code> migrations, JWT auth via <code>PyJWT</code>,
           <code>pwdlib</code> (Argon2) for password hashing, and
-          <code>slowapi</code> for rate limiting — tested with <code>pytest</code>.
-          Frontend: a <code>Vite</code> + <code>Svelte 5</code> SPA in
-          TypeScript, no routing or state library — a small hash router and
-          Svelte 5 runes cover it — tested with <code>Vitest</code>,
-          <code>@testing-library/svelte</code> and end-to-end with
-          <code>Playwright</code>.
+          <code>slowapi</code> for rate limiting. Song recommendations run
+          through the <code>Google Gemini</code> API with structured output,
+          checked against the Discogs API before being shown. Frontend: a
+          <code>Vite</code> + <code>Svelte 5</code> SPA in TypeScript, no
+          routing or state library — a small hash router and Svelte 5 runes
+          cover it. A GitHub Actions pipeline enforces lint, formatting and
+          tests on every push, across all three layers: <code>pytest</code>
+          (backend), <code>Vitest</code> + <code>@testing-library/svelte</code>
+          (frontend units), and <code>Playwright</code> (end-to-end, real
+          browser against the real backend).
         </p>
         <div class="hero-links reveal" style="margin-top:22px">
           <a class="btn btn-primary" href="https://my-setlists-app.onrender.com/" target="_blank" rel="noopener">
